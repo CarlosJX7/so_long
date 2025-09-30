@@ -1,5 +1,21 @@
 #include "map.h"
 
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*str;
+
+	if (!s1 || !s2)
+		return (NULL);
+	str = (char *)ft_calloc((ft_strlen(s1) + ft_strlen(s2)) + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
+	ft_strlcat(str, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
+	free(s1);
+	return (str);
+}
+
+
 void	ft_argv_check(int argc, char **argv, t_game *game)
 {
 	int map_len;
@@ -48,7 +64,7 @@ void	ft_init_map(t_game *game, char **argv)
 		line_temp = get_next_line(map_fd);
 		if (!line_temp)
 			break;
-		map_temp = ft_strjoin(map_temp, line_temp); //malloc
+		map_temp = ft_strjoin_free(map_temp, line_temp); //malloc
 		free(line_temp);
 		game->map.rows++;
 	}
@@ -57,4 +73,5 @@ void	ft_init_map(t_game *game, char **argv)
 	game->map.full = ft_split(map_temp, '\n'); //el append tiene ** nosotros solo *
 	game->map_alloc_bool = true;
 	free(map_temp);
+	free(line_temp);
 }

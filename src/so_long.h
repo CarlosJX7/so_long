@@ -94,4 +94,5 @@ usar nuestro propio map_check
 arreglar leak con ruta de sprite incorrecta
 ver por que no nos esta cogiendo el mapa
 ver lo que hace append en init_map
+comparar las funciones con el original, no deberia de hacer falta nuevo codigo
 */

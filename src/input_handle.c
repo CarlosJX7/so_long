@@ -15,7 +15,7 @@ int		ft_input_handle(int keysym, t_game *game)
 	return 0;
 }
 
-void	ft_player_movement(t_game *game, int new_x, int new_y, int sprite_player)
+void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_player)
 {
 	int old_x;
 	int old_y;
@@ -25,7 +25,7 @@ void	ft_player_movement(t_game *game, int new_x, int new_y, int sprite_player)
 	old_y = game->map.player.y;
 	if (game->map.full[new_y][new_x] == MAP_EXIT && game->map.coins == 0)
 		ft_close_game_win(game);
-	else if (game->map.full[new_y][new_x] == FLOOR || game->map.full[new_y][new_x] == COINS)
+	else if ((game->map.full[new_y][new_x] == FLOOR) || (game->map.full[new_y][new_x] == COINS))
 	{
 		game->map.full[old_y][old_x] = FLOOR;
 		if (game->map.full[new_y][new_x] == COINS)
