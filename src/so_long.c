@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 
 	game = malloc(sizeof(t_game));
 	ft_argv_check(argc, argv, game);
-	ft_init_map(game, argv);
+	ft_init_map(game, argv[1]);
 	ft_init_params(game);
 	//ft_map_check(game);
 	ft_check_map(game);

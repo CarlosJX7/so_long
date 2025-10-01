@@ -15,6 +15,20 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	return (str);
 }
 
+char	*ft_strappend(char **s1, const char *s2)
+{
+	char	*str;
+
+	if (!*s1 || !s2)
+		return (NULL);
+	str = (char *)ft_calloc((ft_strlen(*s1) + ft_strlen(s2)) + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, *s1, ft_strlen(*s1) + 1);
+	ft_strlcat(str, s2, ft_strlen(*s1) + ft_strlen(s2) + 1);
+	free(*s1);
+	return (str);
+}
 
 void	ft_argv_check(int argc, char **argv, t_game *game)
 {
@@ -48,13 +62,13 @@ void	ft_line_check(char *map, t_game *game)
 	}
 }
 
-void	ft_init_map(t_game *game, char **argv)
+void	ft_init_map(t_game *game, char *argv)
 {
 	char *map_temp;
 	char *line_temp;
 	int map_fd;
 
-	map_fd = open(argv[1], O_RDONLY);
+	map_fd = open(argv, O_RDONLY);
 	if (map_fd == -1)
 		ft_error_msg("Error al abrir el mapa\n", game);
 	map_temp = ft_strdup(""); //malloc

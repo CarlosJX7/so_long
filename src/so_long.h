@@ -16,7 +16,7 @@
 # define WALL		'1'
 # define FLOOR		'0'
 # define COINS		'C'
-# define PLAYER		'p'
+# define PLAYER		'P'
 # define MAP_EXIT	'E'
 
 #define WALL_XPM			"assets/sprites/wall.xpm"

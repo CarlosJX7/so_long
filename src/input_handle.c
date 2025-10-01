@@ -32,6 +32,7 @@ void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_player)
 			game->map.coins--;
 		game->map.player.x = new_x;
 		game->map.player.y = new_y;
+		game->map.full[new_y][new_x] = PLAYER;
 		game->movements++;
 		ft_render_map(game);
 	}

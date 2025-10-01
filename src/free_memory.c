@@ -38,11 +38,8 @@ void	ft_free_all_allocated_memory(t_game *game)
 	
 	ft_destroy_images(game);
 	ft_free_map(game);
-	if (game->mlx_ptr && game->win_ptr)
-	{
-		mlx_destroy_window(game->mlx_ptr, game->win_ptr);
-		mlx_destroy_display(game->mlx_ptr);
-		free(game->mlx_ptr);
-	}
+	mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	mlx_destroy_display(game->mlx_ptr);
+	free(game->mlx_ptr);
 	free(game);
 }

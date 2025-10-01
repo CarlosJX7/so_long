@@ -9,6 +9,6 @@
 
 void	ft_argv_check(int argc, char **argv, t_game *game);
 void	ft_line_check(char *map, t_game *game);
-void	ft_init_map(t_game *game, char **argv);
+void	ft_init_map(t_game *game, char *argv);
 
 #endif
