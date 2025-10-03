@@ -1,5 +1,5 @@
 #ifndef EXIT_GAME_H
-# define EXIT_GAME_h
+# define EXIT_GAME_H
 
 
 #include "so_long.h"

@@ -4,8 +4,11 @@
 
 void ft_destroy_xpm(void *mlx_ptr, void *xpm_ptr)
 {
+	//ft_printf("Liberando xpm\n");
 	if (mlx_ptr && xpm_ptr)
+	{
 		mlx_destroy_image(mlx_ptr, xpm_ptr);
+	}
 }
 
 void	ft_destroy_images(t_game *game)
@@ -27,8 +30,9 @@ void	ft_free_map(t_game *game)
 {
 	int i;
 
-	if (!game || !game->map_alloc_bool || game->map.full)
+	if (!game || !game->map_alloc_bool || !game->map.full)
 		return ;
+	//ft_printf("Liberando mapa\n");
 	i = 0;
 	while (game->map.full[i])
 	{

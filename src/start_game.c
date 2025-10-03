@@ -2,12 +2,13 @@
 
 void	ft_init_params(t_game *game)
 {
+	//game->map_alloc_bool = false;
 	game->map.coins = 0;
 	game->map.exit = 0;
 	game->map.players = 0;
 	game->movements = 0;
-	//game->map.col = (int)ft_strlen(game->map.full[0]); 
-	game->map.col = ft_strlen(game->map.full[0]) - 1;
+	game->map.col = (int)ft_strlen(game->map.full[0]); 
+	//game->map.col = ft_strlen(game->map.full[0]) - 1;
 	game->player_sprite = RIGHT;
 }
 
