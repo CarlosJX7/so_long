@@ -1,0 +1,527 @@
+===== ./exit_game.c =====
+#include "exit_game.h"
+
+
+int ft_close_game_win(t_game *game)
+{
+	ft_printf("\nMovimientos: %d\n", ++game->movements);
+	ft_free_all_allocated_memory(game);	
+	exit(0);
+}
+
+int ft_close_game(t_game *game)
+{
+	ft_free_all_allocated_memory(game);
+	exit(0);
+}
+
+int ft_error_msg(char *msg, t_game *game)
+{
+	ft_printf("Error\n>%s<\n", msg);
+	if (game)
+		ft_free_all_allocated_memory(game);
+	exit(1);
+}
+===== ./free_memory.c =====
+#include "free_memory.h"
+
+
+
+void	ft_destroy_images(t_game *game)
+{
+	mlx_destroy_image(game->mlx_ptr, game->wall_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->floor_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->coin_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_back_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_front_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_left_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_right_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->gate_closed_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->gate_open_img.xpm_ptr);
+}
+
+void	ft_free_map(t_game *game)
+{
+	int actual_row;
+	actual_row = 0;
+	
+	while (actual_row < game->map.rows)
+	{
+		free(game->map.full[actual_row]);
+		actual_row++;
+	}
+	free(game->map.full);
+}
+
+
+void	ft_free_all_allocated_memory(t_game *game)
+{
+	if (!game)
+	{
+		return ;
+	}
+	
+	ft_destroy_images(game);
+	ft_free_map(game);
+	mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	mlx_destroy_display(game->mlx_ptr);
+	free(game->mlx_ptr);
+	free(game);
+}
+===== ./input_handle.c =====
+#include "input_handle.h"
+
+int		ft_input_handle(int keysym, t_game *game)
+{
+	if (keysym == KEY_W)
+		ft_player_movement(game, game->map.player.y -1, game->map.player.x, BACK);
+	if (keysym == KEY_A)
+		ft_player_movement(game, game->map.player.y, game->map.player.x - 1, LEFT);
+	if (keysym == KEY_D)
+		ft_player_movement(game, game->map.player.y, game->map.player.x + 1, RIGHT);
+	if (keysym == KEY_S)
+		ft_player_movement(game, game->map.player.y + 1, game->map.player.x, FRONT);
+	if (keysym == KEY_ESC)
+		ft_close_game(game);
+	return 0;
+}
+
+void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_player)
+{
+	int old_x;
+	int old_y;
+
+	game->player_sprite = sprite_player;
+	old_x = game->map.player.x; //ponemos . porque t_map conteine a player sin puntero
+	old_y = game->map.player.y;
+	if (game->map.full[new_y][new_x] == MAP_EXIT && game->map.coins == 0)
+		ft_close_game_win(game);
+	else if ((game->map.full[new_y][new_x] == FLOOR) || (game->map.full[new_y][new_x] == COINS))
+	{
+		game->map.full[old_y][old_x] = FLOOR;
+		if (game->map.full[new_y][new_x] == COINS)
+			game->map.coins--;
+		game->map.player.x = new_x;
+		game->map.player.y = new_y;
+		game->map.full[new_y][new_x] = PLAYER;
+		game->movements++;
+		ft_render_map(game);
+	}
+}
+===== ./map.c =====
+#include "map.h"
+
+char	*ft_strjoin_free(char *s1, char *s2)
+{
+	char	*str;
+
+	if (!s1 || !s2)
+		return (NULL);
+	str = (char *)ft_calloc((ft_strlen(s1) + ft_strlen(s2)) + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, ft_strlen(s1) + 1);
+	ft_strlcat(str, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
+	free(s1);
+	return (str);
+}
+
+char	*ft_strappend(char **s1, const char *s2)
+{
+	char	*str;
+
+	if (!*s1 || !s2)
+		return (NULL);
+	str = (char *)ft_calloc((ft_strlen(*s1) + ft_strlen(s2)) + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, *s1, ft_strlen(*s1) + 1);
+	ft_strlcat(str, s2, ft_strlen(*s1) + ft_strlen(s2) + 1);
+	free(*s1);
+	return (str);
+}
+
+void	ft_argv_check(int argc, char **argv, t_game *game)
+{
+	int map_len;
+	char *extension;
+
+	game->map_alloc_bool = false;
+	if (argc > 2)
+	{
+		ft_error_msg("Tamaño incorrecto de argumentos\n", game); //Seguramente podamos liberar mejor
+		if (argc < 2)
+		ft_error_msg("Necesario añadir el parametro de mapa\n", game);
+		map_len = ft_strlen(argv[1]);
+		extension = argv[1] + map_len - ft_strlen(".ber");
+		if (!ft_strnstr(extension, ".ber", 4))
+			ft_error_msg("Extension del mapa incorrecta\n", game);	
+	}
+}
+
+void	ft_line_check(char *map, t_game *game)
+{
+	//int i;
+	int len;
+
+	//i = 0;
+	len = ft_strlen(map);
+	if (map[0] == '\n' || ft_strnstr(map, "\n\n", len) || map[len - 1] == '\n')
+	{
+		free(map);
+		ft_error_msg("Se ha encontrado una linea vacia en el mapa\n", game);
+	}
+}
+
+void	ft_init_map(t_game *game, char *argv)
+{
+	char *map_temp;
+	char *line_temp;
+	int map_fd;
+
+	map_fd = open(argv, O_RDONLY);
+	if (map_fd == -1)
+		ft_error_msg("Error al abrir el mapa\n", game);
+	map_temp = ft_strdup(""); //malloc
+	game->map.rows = 0;
+	while (true)
+	{
+		line_temp = get_next_line(map_fd);
+		if (!line_temp)
+			break;
+		map_temp = ft_strjoin_free(map_temp, line_temp); //malloc
+		free(line_temp);
+		game->map.rows++;
+	}
+	close(map_fd);
+	ft_line_check(map_temp, game);
+	game->map.full = ft_split(map_temp, '\n'); //el append tiene ** nosotros solo *
+	game->map_alloc_bool = true;
+	free(map_temp);
+	free(line_temp);
+}
+===== ./map_check.c =====
+#include "map_check.h"
+
+void	ft_check_map(t_game *game)
+{
+	ft_check_rows(game);
+	ft_check_columns(game);
+	ft_count_map_parameters(game);
+	ft_verify_map_parameters(game);
+}
+
+void	ft_check_rows(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < game->map.rows)
+	{
+		if (game->map.full[i][0] != WALL)
+			ft_error_msg("Invalid Map. \
+There's a Wall missing from the first row.\n\
+The Map must be surrounded by walls!.", game);
+		else if (game->map.full[i][game->map.col - 1] != WALL)
+			ft_error_msg("Invalid Map. \
+There's a Wall missing from the last row.\n\
+The Map must be surrounded by walls!.", game);
+		i++;
+	}
+}
+
+void	ft_check_columns(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (i < game->map.col)
+	{
+		if (game->map.full[0][i] != WALL)
+			ft_error_msg("Invalid Map. \
+There's a Wall missing from the first column.\n\
+The Map must be surrounded by walls!.", game);
+		else if (game->map.full[game->map.rows - 1][i] != WALL)
+			ft_error_msg("Invalid Map. \
+There's a Wall missing from the last column.\n\
+The Map must be surrounded by walls!.", game);
+		i++;
+	}
+}
+
+void	ft_count_map_parameters(t_game *game)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < game->map.rows)
+	{
+		x = 0;
+		while (x < game->map.col)
+		{
+			if (!ft_strchr("CEP01", game->map.full[y][x]))
+				ft_error_msg("Invalid Map. Not expected map parameter.", game);
+			else if (game->map.full[y][x] == PLAYER)
+			{
+				game->map.player.x = x;
+				game->map.player.y = y;
+			}
+			else if (game->map.full[y][x] == COINS)
+				game->map.coins++;
+			else if (game->map.full[y][x] == MAP_EXIT)
+				game->map.exit++;
+			x++;
+		}
+		y++;
+	}
+}
+
+void	ft_verify_map_parameters(t_game *game)
+{
+	if (game->map.coins == 0)
+		ft_error_msg("Invalid Map. There are no Coins!", game);
+	else if (game->map.exit == 0)
+		ft_error_msg("Invalid Map. There is no Exit.", game);
+}
+===== ./map_render.c =====
+#include "map_render.h"
+
+void	ft_print_movements(t_game *game) //aun por usar 
+{
+	char *movs;
+	char *cadena;
+
+	movs = ft_itoa(game->movements);
+	cadena = ft_strjoin("Cantidad de movimientos: ", movs);
+	mlx_string_put(game->mlx_ptr, game->win_ptr, 40, 20, 99999, cadena);
+	free(movs);
+	free(cadena);
+}
+
+void	ft_render_sprite(t_game *game, t_image sprite, int row, int col)
+{
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, sprite.xpm_ptr, col * sprite.x, row * sprite.y);
+}
+
+void	ft_render_player(t_game *game, int y, int x)
+{
+	if (game->player_sprite == FRONT)
+		ft_render_sprite(game, game->player_front_img, y, x);
+	if (game->player_sprite == BACK)
+		ft_render_sprite(game, game->player_back_img, y, x);
+	if (game->player_sprite == LEFT)
+		ft_render_sprite(game, game->player_left_img, y, x);
+	if (game->player_sprite == RIGHT)
+		ft_render_sprite(game, game->player_right_img, y, x);
+}
+
+void	ft_render_map_char(t_game *game, int y, int x)
+{
+	char	parameter;
+
+	parameter = game->map.full[y][x];
+	if (parameter == WALL)
+		ft_render_sprite (game, game->wall_img, y, x);
+	else if (parameter == FLOOR)
+		ft_render_sprite (game, game->floor_img, y, x);
+	else if (parameter == COINS)
+		ft_render_sprite (game, game->coin_img, y, x);
+	else if (parameter == MAP_EXIT)
+	{
+		if (game->map.coins == 0)
+			ft_render_sprite (game, game->gate_open_img, y, x);
+		else
+			ft_render_sprite (game, game->gate_closed_img, y, x);
+	}
+	else if (parameter == PLAYER)
+		ft_render_player (game, y, x);
+}
+
+int	ft_render_map(t_game *game)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (y < game->map.rows)
+	{
+		x = 0;
+		while (x < game->map.col)
+		{
+			ft_render_map_char(game, y, x);
+			x++;
+		}
+		y++;
+	}
+	return 0;
+}
+===== ./so_long.c =====
+#include "so_long.h"
+#include "map.h"
+#include "start_game.h"
+#include "map_check.h"
+#include "map_render.h"
+#include "input_handle.h"
+#include "free_memory.h"
+
+int main(int argc, char **argv)
+{
+	t_game *game;
+
+	game = malloc(sizeof(t_game));
+	ft_argv_check(argc, argv, game);
+	ft_init_map(game, argv[1]);
+	ft_init_params(game);
+	//ft_map_check(game);
+	ft_check_map(game);
+	ft_init_mlx(game);
+	ft_init_sprites(game);
+	ft_render_map(game);
+	mlx_hook(game->win_ptr, KeyPress, KeyPressMask, ft_input_handle, game);
+	mlx_hook(game->win_ptr, DestroyNotify, ButtonPressMask, ft_close_game, game);
+	mlx_hook(game->win_ptr, Expose, ExposureMask, ft_render_map, game);
+	mlx_loop(game->mlx_ptr);
+	ft_free_all_allocated_memory(game);	
+	return 0;
+}
+===== ./so_long_utils.c =====
+#include "so_long_utils.h"
+
+void	ft_destroy_images_mlx(t_game *game)
+{
+	mlx_destroy_image(game->mlx_ptr, game->wall_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->floor_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->coin_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_front_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_left_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_back_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->player_right_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->gate_closed_img.xpm_ptr);
+	mlx_destroy_image(game->mlx_ptr, game->gate_open_img.xpm_ptr);
+}
+
+void	ft_free_mapppp(t_game *game)
+{
+	int	string;
+	
+	string = 0;
+	while (string < game->map.rows)
+		free(game->map.full[string++]);
+	free(game->map.full);
+	
+}
+
+void ft_free_all(t_game *game)
+{
+	ft_destroy_images_mlx(game);
+	ft_free_mapppp(game);
+	mlx_destroy_window(game->mlx_ptr, game->win_ptr);
+	mlx_destroy_display(game->mlx_ptr);
+	free(game->mlx_ptr);
+	free(game);
+}
+
+static int	ft_check_arguments(va_list arg, char c)
+{
+	int	bytes;
+
+	bytes = 0;
+	if (c == '%')
+		bytes += ft_argument_percent();
+	if (c == 'c')
+		bytes += ft_argument_c(va_arg(arg, int));
+	if (c == 's')
+		bytes += ft_argument_s(va_arg(arg, char *));
+	if (c == 'p')
+		bytes += ft_argument_p(va_arg(arg, unsigned long));
+	if (c == 'd' || c == 'i')
+		bytes += ft_arguments_d_i(va_arg(arg, int));
+	if (c == 'u')
+		bytes += ft_argument_u(va_arg(arg, int));
+	if (c == 'x' || c == 'X')
+		bytes += ft_arguments_x(va_arg(arg, unsigned int), c);
+	return (bytes);
+}
+
+int	ft_printf(const char *str, ...)
+{
+	va_list		arg;
+	int			i;
+	int			bytes;
+	char		c;
+
+	i = 0;
+	bytes = 0;
+	va_start(arg, str);
+	while (str[i])
+	{
+		c = str[i + 1];
+		if (str[i] == '%')
+		{
+			bytes += ft_check_arguments(arg, c);
+			i++;
+		}
+		else
+			bytes += write(1, &str[i], sizeof(char));
+		i++;
+	}
+	va_end(arg);
+	return (bytes);
+}
+===== ./start_game.c =====
+#include "start_game.h"
+
+void	ft_init_params(t_game *game)
+{
+	game->map.coins = 0;
+	game->map.exit = 0;
+	game->map.players = 0;
+	game->movements = 0;
+	game->map.col = ft_strlen(game->map.full[0]) - 1;
+	game->player_sprite = RIGHT;
+}
+
+void	ft_init_mlx(t_game *game)
+{
+	game->mlx_ptr = mlx_init();
+	if (!game->mlx_ptr)
+	{
+		free(game->mlx_ptr);
+		ft_error_msg("Error al iniciar la MLX", game);
+	}
+	game->win_ptr = (mlx_new_window(game->mlx_ptr, game->map.col * IMG_WIDTH, game->map.rows * IMG_HEIGHT, "so_long"));
+	if (!game->win_ptr)
+	{
+		//mlx_destroy_display(game->mlx_ptr);
+		free(game->mlx_ptr);
+		ft_error_msg("Error al crear la ventana\n", game);
+	}
+}
+
+t_image	ft_new_sprite(void *mlx, char *path, t_game *game) // checkear por que aqui no usamos un puntero
+{
+	t_image sprite;
+
+	sprite.xpm_ptr = mlx_xpm_file_to_image(mlx, path, &sprite.x, &sprite.y);//liberar
+	if (!sprite.xpm_ptr)
+		ft_error_msg("Error al generar el sprite\n", game);
+	return sprite;
+}
+
+void	ft_init_sprites(t_game *game)
+{
+	void *mlx;
+
+	mlx = game->mlx_ptr;
+	game->wall_img = ft_new_sprite(mlx, WALL_XPM, game);
+	game->floor_img = ft_new_sprite(mlx, FLOOR_XPM, game);
+	game->coin_img = ft_new_sprite(mlx, COIN_XPM, game);
+	game->player_back_img = ft_new_sprite(mlx, PLAYER_BACK_XPM, game);
+	game->player_front_img = ft_new_sprite(mlx, PLAYER_FRONT_XPM, game);
+	game->player_left_img = ft_new_sprite(mlx, PLAYER_LEFT_XPM, game);
+	game->player_right_img = ft_new_sprite(mlx, PLAYER_RIGHT_XPM, game);
+	game->gate_open_img = ft_new_sprite(mlx, GATE_OPEN_XPM, game);
+	game->gate_closed_img = ft_new_sprite(mlx, GATE_CLOSED_XPM, game);
+}
+

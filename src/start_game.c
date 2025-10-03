@@ -6,6 +6,7 @@ void	ft_init_params(t_game *game)
 	game->map.exit = 0;
 	game->map.players = 0;
 	game->movements = 0;
+	//game->map.col = (int)ft_strlen(game->map.full[0]); 
 	game->map.col = ft_strlen(game->map.full[0]) - 1;
 	game->player_sprite = RIGHT;
 }
@@ -15,14 +16,14 @@ void	ft_init_mlx(t_game *game)
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
 	{
-		free(game->mlx_ptr);
+		//free(game->mlx_ptr);
 		ft_error_msg("Error al iniciar la MLX", game);
 	}
 	game->win_ptr = (mlx_new_window(game->mlx_ptr, game->map.col * IMG_WIDTH, game->map.rows * IMG_HEIGHT, "so_long"));
 	if (!game->win_ptr)
 	{
 		//mlx_destroy_display(game->mlx_ptr);
-		free(game->mlx_ptr);
+		//free(game->mlx_ptr);
 		ft_error_msg("Error al crear la ventana\n", game);
 	}
 }

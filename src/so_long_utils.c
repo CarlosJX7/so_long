@@ -1,6 +1,6 @@
 #include "so_long_utils.h"
 
-void	ft_destroy_images_mlx(t_game *game)
+static void	ft_destroy_images_mlx(t_game *game)
 {
 	mlx_destroy_image(game->mlx_ptr, game->wall_img.xpm_ptr);
 	mlx_destroy_image(game->mlx_ptr, game->floor_img.xpm_ptr);
@@ -13,7 +13,7 @@ void	ft_destroy_images_mlx(t_game *game)
 	mlx_destroy_image(game->mlx_ptr, game->gate_open_img.xpm_ptr);
 }
 
-void	ft_free_mapppp(t_game *game)
+static void	ft_free_mapppp(t_game *game)
 {
 	int	string;
 	

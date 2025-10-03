@@ -6,8 +6,8 @@
 # include <stdarg.h>
 # include "so_long.h"
 
-void	ft_destroy_images_mlx(t_game *game);
-void	ft_free_map(t_game *game);
+//void	ft_destroy_images_mlx(t_game *game);
+//void	ft_free_map(t_game *game);
 void ft_free_all(t_game *game);
 int	ft_printf(const char *str, ...);
 //5/5
