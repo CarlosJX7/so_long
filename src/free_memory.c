@@ -30,7 +30,7 @@ void	ft_free_map(t_game *game)
 	if (!game || !game->map_alloc_bool || game->map.full)
 		return ;
 	i = 0;
-	while (i < game->map.rows && game->map.full[i])
+	while (game->map.full[i])
 	{
 		free(game->map.full[i]);
 		i++;
