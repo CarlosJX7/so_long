@@ -16,25 +16,26 @@ char	*ft_strjoin_free(char *s1, char *s2)
 }
 
 
-
+/*
 void	ft_argv_check(int argc, char **argv, t_game *game)
 {
 	int map_len;
 	//char *extension;
-
+	
 	game->map_alloc_bool = false;
 	if (argc > 2)
 	{
 		ft_error_msg("Tamaño incorrecto de argumentos\n", game); //Seguramente podamos liberar mejor
 	}
 	if (argc < 2)
-		ft_error_msg("Necesario añadir el parametro de mapa\n", game);
+	ft_error_msg("Necesario añadir el parametro de mapa\n", game);
 	map_len = ft_strlen(argv[1]);
 	//extension = argv[1] + map_len - ft_strlen(".ber");
 	//if (!ft_strnstr(extension, ".ber", 4))
 	if (map_len < 4 || ft_strncmp(argv[1] + (map_len - 4), ".ber", 4) != 0)
-		ft_error_msg("Extension del mapa incorrecta\n", game);	
+	ft_error_msg("Extension del mapa incorrecta\n", game);	
 }
+*/
 
 void	ft_argv_checker(int argc, char **argv)
 {
@@ -61,6 +62,18 @@ void	ft_argv_checker(int argc, char **argv)
 		exit(0);
 	}
 }
+
+void    ft_line_check_split(char **lines, t_game *game)
+{
+    int i;
+
+    if (!lines || !lines[0])
+        ft_error_msg("Mapa vacio\n", game);
+    for (i = 0; lines[i]; ++i)
+        if (lines[i][0] == '\0')
+            ft_error_msg("Se ha encontrado una linea vacia en el mapa\n", game);
+}
+
 
 void	ft_line_check(char *map, t_game *game)
 {
@@ -138,8 +151,40 @@ t_game	*ft_init_map(char *argv)
 		game->map.rows++;
 	}
 	close(map_fd);
-	ft_line_check(map_temp, game);
+	ft_printf("map_temp = \n>%s<\n", map_temp);
+
+
+
+
+	//ft_line_check(map_temp, game); //BASTANTE MAS RESTRICTIVO
+	
+	/*
+	
+	TO_DO
+	Probablemente el map_check copiado es bastante rudimentario. Casi que mejor partir de que tenemos el array de array y desde ahi empezar
+	de cero a volver a hacer las comprobaciones ya que los mapas no validos vuelven a saltar. Tendriamos que trabajar ahora con el array de arrays
+	y ya que estamos empezar a con el algoritmo de la ruta. Vemos que al menos ahora los mapas validos los aprueba todos, asi que toca mirar los casos
+	no validos.
+	TIP
+	Si nos hacemos un funcion para imprimir el contenido del array de arrays, podremos gestionar mejor los casos
+	Creo que la parte importante va a ser con los saltos de linea del final. En teoria deberian de ser validos mientra que el mapa este bien, otra opcion
+	seria justificar con ayuda del subject en la correccion que los mapas no deberian terminar con salto de linea, AUNQUE CON UN SPLIT NO DEBERIAMOS ENCONTRAR
+	SALTOS DE LINEA AL FINAL, PARA ESO MEJOR LA FUNCION PARA IMPRIMIR EL CONTENIDO DEL ARRAY DE ARRAYS OSEA GAME-MAP.-FULL  
+
+	
+	
+	*/
+	
+	
 	game->map.full = ft_split(map_temp, '\n'); //el append tiene ** nosotros solo *
+
+
+
+
+	ft_line_check_split(game->map.full, game); // CON ESTA LINEA ACEPTAMOS LOS MAPAS PERO FALLA EN LOS MALOS
+
+
+
 	if (!game->map.full)
 	{
 		//free(game->map.full);

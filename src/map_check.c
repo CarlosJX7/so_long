@@ -11,10 +11,17 @@ void	ft_check_map(t_game *game)
 void	ft_check_rows(t_game *game)
 {
 	int	i;
+	size_t row_len;
 
+	row_len = ft_strlen(game->map.full[0]);
 	i = 0;
 	while (i < game->map.rows)
 	{
+		if (row_len != ft_strlen(game->map.full[i]))
+		{
+			ft_error_msg("Mapa no rectangular\n", game);
+		}
+		
 		if (game->map.full[i][0] != WALL)
 			ft_error_msg("Invalid Map. \
 There's a Wall missing from the first row.\n\
@@ -63,6 +70,7 @@ void	ft_count_map_parameters(t_game *game)
 			{
 				game->map.player.x = x;
 				game->map.player.y = y;
+				game->map.players++;
 			}
 			else if (game->map.full[y][x] == COINS)
 				game->map.coins++;
@@ -80,4 +88,11 @@ void	ft_verify_map_parameters(t_game *game)
 		ft_error_msg("Invalid Map. There are no Coins!", game);
 	else if (game->map.exit == 0)
 		ft_error_msg("Invalid Map. There is no Exit.", game);
+	else if (game->map.exit > 1)
+		ft_error_msg("Invalid Map. Multiples salidas", game);
+	else if (game->map.players == 0 )
+		ft_error_msg("Invalid Map. No hay jugadores", game);
+	else if (game->map.players > 1)
+		ft_error_msg("Invalid Map. Jugadores duplicados", game);
+	
 }
