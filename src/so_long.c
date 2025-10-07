@@ -5,6 +5,7 @@
 #include "map_render.h"
 #include "input_handle.h"
 #include "free_memory.h"
+#include "check_path.h"
 
 int main(int argc, char **argv)
 {
@@ -19,9 +20,11 @@ int main(int argc, char **argv)
 	
 	//ft_argv_check(argc, argv, game);
 	game = ft_init_map(argv[1]);
-	ft_init_params(game);
 	//ft_map_check(game);
-	ft_check_map(game);
+	map_check(game);
+	check_path(game);
+	ft_init_params(game);
+	//ft_check_map(game);
 	ft_init_mlx(game);
 	ft_init_sprites(game);
 	ft_render_map(game);

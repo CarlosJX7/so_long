@@ -17,7 +17,8 @@ SRCS := so_long.c \
         map_check.c \
         free_memory.c \
         so_long_utils.c \
-        exit_game.c
+        exit_game.c \
+        check_path.c
 SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))
 
 # Objetos y dependencias
