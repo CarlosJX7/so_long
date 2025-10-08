@@ -15,7 +15,7 @@ int	ft_input_handle(int keysym, t_game *g)
 	return (0);
 }
 
-static int	in_bounds(t_game *g, int y, int x)
+static int	in_bounds_mov(t_game *g, int y, int x)
 {
 	return (y >= 0 && x >= 0 && y < g->map.rows && x < g->map.col);
 }
@@ -28,7 +28,7 @@ void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_p)
 	old_x = game->map.player.x;
 	old_y = game->map.player.y;
 	game->player_sprite = sprite_p;
-	if (!in_bounds(game, new_y, new_x))
+	if (!in_bounds_mov(game, new_y, new_x))
 		return ;
 	if (game->map.full[new_y][new_x] == WALL)
 		return ;

@@ -31,14 +31,14 @@ int	count_lines_split(char **arr)
 	return (i);
 }
 
-static int	is_passable(char c)
+int	is_passable(char c)
 {
 	if (c == FLOOR || c == COINS || c == PLAYER)
 		return (1);
 	return (0);
 }
 
-static int	in_bounds(int x, int y, int w, int h)
+int	in_bounds(int x, int y, int w, int h)
 {
 	if (x < 0 || y < 0)
 		return (0);
