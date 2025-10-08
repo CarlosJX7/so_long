@@ -1,15 +1,13 @@
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#ifndef SO_LONG_UTILS_H
+# define SO_LONG_UTILS_H
 
-# include <stdlib.h>
 # include <unistd.h>
-# include <stdarg.h>
+# include "../utils/Libft/libft.h"
 # include "so_long.h"
-# include "free_memory.h"
 
-//void	ft_destroy_images_mlx(t_game *game);
-//void	ft_free_map(t_game *game);
-//void ft_free_all(t_game *game);
-int	ft_printf(const char *str, ...);
-//5/5
+char	*ft_strjoin_free(char *s1, char *s2);
+int		count_lines_split(char **arr);
+int		is_passable(char c);
+int		in_bounds(int x, int y, int w, int h);
+
 #endif

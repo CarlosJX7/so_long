@@ -9,27 +9,42 @@
 
 #include "so_long.h"
 #include "map_check.h"
-#include <unistd.h>
-#include <stdlib.h>
 
-/* Emite una sola línea y aborta; ajusta los textos si tu tester requiere otros */
-static void die_line(char *s, t_game *game)
+static void	process_line_counts(t_game *g, const char *line, int row)
 {
-	ft_error_msg(s, game);
+	int		j;
+	char	c;
+
+	j = 0;
+	while (line[j])
+	{
+		c = line[j];
+		if (c != WALL && c != FLOOR && c != COINS
+			&& c != PLAYER && c != MAP_EXIT)
+			ft_error_msg("Caracter invalido en el mapa\n", g);
+		if (c == COINS)
+			g->map.coins++;
+		else if (c == MAP_EXIT)
+			g->map.exit++;
+		else if (c == PLAYER)
+		{
+			g->map.players++;
+			g->map.player.x = j;
+			g->map.player.y = row;
+		}
+		j++;
+	}
 }
 
-/* 1) Rectangularidad + caracteres + conteo y posición de P */
-static void check_rect_and_count(t_game *g)
+static void	check_rect_and_count(t_game *g)
 {
-	int   i;
-	int   j;
-	int   cols;
-	char  **m;
-	char  c;
+	int		i;
+	int		cols;
+	char	**m;
 
 	m = g->map.full;
 	if (!m || !m[0])
-		die_line("Error", g); /* mapa vacío o split fallido */
+		ft_error_msg("Mapa vacio\n", g);
 	cols = (int)ft_strlen(m[0]);
 	g->map.coins = 0;
 	g->map.exit = 0;
@@ -38,26 +53,8 @@ static void check_rect_and_count(t_game *g)
 	while (m[i])
 	{
 		if ((int)ft_strlen(m[i]) != cols)
-			die_line("No rectangular", g);
-		j = 0;
-		while (m[i][j])
-		{
-			c = m[i][j];
-			if (c != WALL && c != FLOOR && c != COINS
-			 && c != PLAYER && c != MAP_EXIT)
-				die_line("Wrong characters", g);
-			if (c == COINS)
-				g->map.coins++;
-			else if (c == MAP_EXIT)
-				g->map.exit++;
-			else if (c == PLAYER)
-			{
-				g->map.players++;
-				g->map.player.x = j;
-				g->map.player.y = i;
-			}
-			j++;
-		}
+			ft_error_msg("Mapa no rectangular", g);
+		process_line_counts(g, m[i], i);
 		i++;
 	}
 	g->map.rows = i;
@@ -65,44 +62,47 @@ static void check_rect_and_count(t_game *g)
 }
 
 /* 2) Muros envolventes (y tamaño mínimo para poder cerrarlo) */
-static void check_walls(t_game *g)
+static void	check_walls(t_game *g)
 {
-	int   i;
-	int   cols = g->map.col;
-	int   rows = g->map.rows;
-	char  **m = g->map.full;
+	int		i;
+	int		cols;
+	int		rows;
+	char	**m;
 
+	cols = g->map.col;
+	rows = g->map.rows;
+	m = g->map.full;
 	if (rows < 3 || cols < 3)
-		die_line("Not surrounded by walls", g);
+		ft_error_msg("Mapa demasiado pequeño\n", g);
 	i = 0;
 	while (i < cols)
 	{
 		if (m[0][i] != WALL || m[rows - 1][i] != WALL)
-			die_line("Not surrounded by walls", g);
+			ft_error_msg("No está rodeado de muros\n", g);
 		i++;
 	}
 	i = 0;
 	while (i < rows)
 	{
 		if (m[i][0] != WALL || m[i][cols - 1] != WALL)
-			die_line("Not surrounded by walls", g);
+			ft_error_msg("No está rodeado de muros\n", g);
 		i++;
 	}
 }
 
 /* 3) Cantidades exactas de entidades */
-static void check_counts(t_game *g)
+static void	check_counts(t_game *g)
 {
 	if (g->map.players == 0)
-		die_line("No player", g);
+		ft_error_msg("Jugador no encontrado\n", g);
 	if (g->map.players > 1)
-		die_line("Duplicate player", g);
+		ft_error_msg("Jugador duplicado\n", g);
 	if (g->map.exit == 0)
-		die_line("No exit", g);
+		ft_error_msg("No se ha encontrado una salida\n", g);
 	if (g->map.exit > 1)
-		die_line("Duplicate exit", g);
+		ft_error_msg("Salida duplicada\n", g);
 	if (g->map.coins < 1)
-		die_line("No object", g);
+		ft_error_msg("No se han encontrado objetos en el mapa\n", g);
 }
 
 /* Punto de entrada único; no llamar a otros validadores en paralelo */
@@ -111,5 +111,4 @@ void	map_check(t_game *game)
 	check_rect_and_count(game);
 	check_walls(game);
 	check_counts(game);
-	/* El pathfinding se añadirá más tarde */
 }

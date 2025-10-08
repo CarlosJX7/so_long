@@ -1,93 +1,48 @@
 #include "so_long_utils.h"
-/*
-static void	ft_destroy_images_mlx(t_game *game)
+
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-	mlx_destroy_image(game->mlx_ptr, game->wall_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->floor_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->coin_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->player_front_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->player_left_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->player_back_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->player_right_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->gate_closed_img.xpm_ptr);
-	mlx_destroy_image(game->mlx_ptr, game->gate_open_img.xpm_ptr);
-}
-*/
-/*
-static void	ft_free_mapppp(t_game *game)
-{
-	int	string;
-	
-	string = 0;
-	while (string < game->map.rows)
-	free(game->map.full[string++]);
-	free(game->map.full);
-	
+	char	*str;
+	size_t	len1;
+	size_t	len2;
+
+	if (!s1 || !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	str = (char *)ft_calloc(len1 + len2 + 1, sizeof(char));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, len1 + 1);
+	ft_strlcat(str, s2, len1 + len2 + 1);
+	free(s1);
+	return (str);
 }
 
-*/
-
-
-/*
-void ft_free_all(t_game *game)
+int	count_lines_split(char **arr)
 {
-	if(game)
-		ft_free_all_allocated_memory(game);
-	//ft_destroy_images_mlx(game);
-	//ft_free_map(game);
-	ft_destroy_images_mlx(game);
-	ft_free_mapppp(game);
-	mlx_destroy_window(game->mlx_ptr, game->win_ptr);
-	mlx_destroy_display(game->mlx_ptr);
-	free(game->mlx_ptr);
-	free(game);
+	int	i;
+
+	if (!arr)
+		return (0);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
 }
 
-*/
-static int	ft_check_arguments(va_list arg, char c)
+static int	is_passable(char c)
 {
-	int	bytes;
-
-	bytes = 0;
-	if (c == '%')
-		bytes += ft_argument_percent();
-	if (c == 'c')
-		bytes += ft_argument_c(va_arg(arg, int));
-	if (c == 's')
-		bytes += ft_argument_s(va_arg(arg, char *));
-	if (c == 'p')
-		bytes += ft_argument_p(va_arg(arg, unsigned long));
-	if (c == 'd' || c == 'i')
-		bytes += ft_arguments_d_i(va_arg(arg, int));
-	if (c == 'u')
-		bytes += ft_argument_u(va_arg(arg, int));
-	if (c == 'x' || c == 'X')
-		bytes += ft_arguments_x(va_arg(arg, unsigned int), c);
-	return (bytes);
+	if (c == FLOOR || c == COINS || c == PLAYER)
+		return (1);
+	return (0);
 }
 
-int ft_printf(const char *str, ...)
+static int	in_bounds(int x, int y, int w, int h)
 {
-    va_list arg;
-    int i;
-    int bytes;
-
-    i = 0;
-    bytes = 0;
-    va_start(arg, str);
-    while (str && str[i])
-    {
-        if (str[i] == '%')
-        {
-            if (str[i + 1] == '\0')
-                break;
-            bytes += ft_check_arguments(arg, str[i + 1]);
-            i += 2;
-            continue;
-        }
-        bytes += write(1, &str[i], 1);
-        i++;
-    }
-    va_end(arg);
-    return (bytes);
+	if (x < 0 || y < 0)
+		return (0);
+	if (x >= w || y >= h)
+		return (0);
+	return (1);
 }

@@ -2,11 +2,8 @@
 
 void	ft_init_params(t_game *game)
 {
-	//game->map_alloc_bool = false;
-
 	game->movements = 0;
-
-	//game->map.col = ft_strlen(game->map.full[0]) - 1;
+	game->map.col = ft_strlen(game->map.full[0]);
 	game->player_sprite = RIGHT;
 }
 
@@ -16,29 +13,30 @@ void	ft_init_mlx(t_game *game)
 		ft_error_msg("Error al iniciar la MLX", game);
 	game->mlx_ptr = mlx_init();
 	if (!game->mlx_ptr)
+	{
 		ft_error_msg("Error al iniciar la MLX", game);
-	game->win_ptr = (mlx_new_window(game->mlx_ptr, game->map.col * IMG_WIDTH, game->map.rows * IMG_HEIGHT, "so_long"));
+	}
+	game->win_ptr = (mlx_new_window(game->mlx_ptr, game->map.col * IMG_WIDTH,
+		game->map.rows * IMG_HEIGHT, "so_long"));
 	if (!game->win_ptr)
 	{
-		//mlx_destroy_display(game->mlx_ptr);
-		//free(game->mlx_ptr);
 		ft_error_msg("Error al crear la ventana\n", game);
 	}
 }
 
-t_image	ft_new_sprite(void *mlx, char *path, t_game *game) // checkear por que aqui no usamos un puntero
+t_image	ft_new_sprite(void *mlx, char *path, t_game *game)
 {
-	t_image sprite;
+	t_image	sprite;
 
-	sprite.xpm_ptr = mlx_xpm_file_to_image(mlx, path, &sprite.x, &sprite.y);//liberar
+	sprite.xpm_ptr = mlx_xpm_file_to_image(mlx, path, &sprite.x, &sprite.y);
 	if (!sprite.xpm_ptr)
 		ft_error_msg("Error al generar el sprite\n", game);
-	return sprite;
+	return (sprite);
 }
 
 void	ft_init_sprites(t_game *game)
 {
-	void *mlx;
+	void	*mlx;
 
 	mlx = game->mlx_ptr;
 	game->wall_img = ft_new_sprite(mlx, WALL_XPM, game);
@@ -50,27 +48,4 @@ void	ft_init_sprites(t_game *game)
 	game->player_right_img = ft_new_sprite(mlx, PLAYER_RIGHT_XPM, game);
 	game->gate_open_img = ft_new_sprite(mlx, GATE_OPEN_XPM, game);
 	game->gate_closed_img = ft_new_sprite(mlx, GATE_CLOSED_XPM, game);
-	if (!game->wall_img.xpm_ptr || !game->floor_img.xpm_ptr || !game->player_back_img.xpm_ptr || !game->player_front_img.xpm_ptr || !game->player_left_img.xpm_ptr
-		|| !game->player_right_img.xpm_ptr || !game->coin_img.xpm_ptr || !game->gate_closed_img.xpm_ptr || !game->gate_open_img.xpm_ptr)
-	{
-		if(game->wall_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->wall_img.xpm_ptr);
-		if(game->floor_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->floor_img.xpm_ptr);
-		if(game->player_back_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->player_back_img.xpm_ptr);
-		if(game->player_front_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->player_front_img.xpm_ptr);
-		if(game->player_left_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->player_left_img.xpm_ptr);
-		if(game->player_right_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->player_right_img.xpm_ptr);
-		if(game->coin_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->coin_img.xpm_ptr);
-		if(game->gate_closed_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->gate_closed_img.xpm_ptr);
-		if(game->gate_open_img.xpm_ptr)
-			mlx_destroy_image(mlx, game->gate_open_img.xpm_ptr);
-		ft_error_msg("Error al cargar los sprites\n", game);
-	}
 }

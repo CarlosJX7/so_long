@@ -1,20 +1,9 @@
 #include "map_render.h"
 
-void	ft_print_movements(t_game *game) //aun por usar 
-{
-	char *movs;
-	char *cadena;
-
-	movs = ft_itoa(game->movements);
-	cadena = ft_strjoin("Cantidad de movimientos: ", movs);
-	mlx_string_put(game->mlx_ptr, game->win_ptr, 40, 20, 99999, cadena);
-	free(movs);
-	free(cadena);
-}
-
 void	ft_render_sprite(t_game *game, t_image sprite, int row, int col)
 {
-	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr, sprite.xpm_ptr, col * sprite.x, row * sprite.y);
+	mlx_put_image_to_window(game->mlx_ptr, game->win_ptr,
+		sprite.xpm_ptr, col * sprite.x, row * sprite.y);
 }
 
 void	ft_render_player(t_game *game, int y, int x)
@@ -27,7 +16,6 @@ void	ft_render_player(t_game *game, int y, int x)
 		ft_render_sprite(game, game->player_left_img, y, x);
 	if (game->player_sprite == RIGHT)
 		ft_render_sprite(game, game->player_right_img, y, x);
-	//ft_print_movements(game);
 	ft_printf("Movimientos: %d\n", game->movements);
 }
 
@@ -55,8 +43,8 @@ void	ft_render_map_char(t_game *game, int y, int x)
 
 int	ft_render_map(t_game *game)
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 
 	y = 0;
 	while (y < game->map.rows)
@@ -69,5 +57,5 @@ int	ft_render_map(t_game *game)
 		}
 		y++;
 	}
-	return 0;
+	return (0);
 }

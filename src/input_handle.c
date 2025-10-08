@@ -1,41 +1,42 @@
 #include "input_handle.h"
 
-int		ft_input_handle(int keysym, t_game *game)
+int	ft_input_handle(int keysym, t_game *g)
 {
 	if (keysym == KEY_W)
-		ft_player_movement(game, game->map.player.y -1, game->map.player.x, BACK);
+		ft_player_movement(g, g->map.player.y -1, g->map.player.x, BACK);
 	if (keysym == KEY_A)
-		ft_player_movement(game, game->map.player.y, game->map.player.x - 1, LEFT);
+		ft_player_movement(g, g->map.player.y, g->map.player.x - 1, LEFT);
 	if (keysym == KEY_D)
-		ft_player_movement(game, game->map.player.y, game->map.player.x + 1, RIGHT);
+		ft_player_movement(g, g->map.player.y, g->map.player.x + 1, RIGHT);
 	if (keysym == KEY_S)
-		ft_player_movement(game, game->map.player.y + 1, game->map.player.x, FRONT);
+		ft_player_movement(g, g->map.player.y + 1, g->map.player.x, FRONT);
 	if (keysym == KEY_ESC)
-		ft_close_game(game);
-	return 0;
+		ft_close_game(g);
+	return (0);
 }
 
-// input_handle.c
-static int in_bounds(t_game *g, int y, int x)
+static int	in_bounds(t_game *g, int y, int x)
 {
 	return (y >= 0 && x >= 0 && y < g->map.rows && x < g->map.col);
 }
 
-void ft_player_movement(t_game *game, int new_y, int new_x, int sprite_player)
+void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_p)
 {
-	int old_x = game->map.player.x;
-	int old_y = game->map.player.y;
+	int	old_x;
+	int	old_y;
 
-	game->player_sprite = sprite_player;
+	old_x = game->map.player.x;
+	old_y = game->map.player.y;
+	game->player_sprite = sprite_p;
 	if (!in_bounds(game, new_y, new_x))
-		return;
+		return ;
 	if (game->map.full[new_y][new_x] == WALL)
-		return;
+		return ;
 	if (game->map.full[new_y][new_x] == MAP_EXIT && game->map.coins == 0)
-		return (void)ft_close_game_win(game), (void)0;
-	if (game->map.full[new_y][new_x] != FLOOR && game->map.full[new_y][new_x] != COINS)
-		return;
-
+		ft_close_game_win(game);
+	if (game->map.full[new_y][new_x] != FLOOR
+		&& game->map.full[new_y][new_x] != COINS)
+		return ;
 	game->map.full[old_y][old_x] = FLOOR;
 	if (game->map.full[new_y][new_x] == COINS)
 		game->map.coins--;
