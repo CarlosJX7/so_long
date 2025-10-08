@@ -3,7 +3,7 @@
 
 int ft_close_game_win(t_game *game)
 {
-	ft_printf("\nMovimientos: %d\n", ++game->movements);
+	ft_printf("Movimientos: %d\n", ++game->movements);
 	ft_free_all_allocated_memory(game);	
 	exit(0);
 }

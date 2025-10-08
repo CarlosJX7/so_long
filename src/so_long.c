@@ -30,7 +30,10 @@ int main(int argc, char **argv)
 	ft_render_map(game);
 	mlx_hook(game->win_ptr, KeyPress, KeyPressMask, ft_input_handle, game);
 	mlx_hook(game->win_ptr, DestroyNotify, ButtonPressMask, ft_close_game, game);
-	mlx_hook(game->win_ptr, Expose, ExposureMask, ft_render_map, game);
+	// so_long.c
+	mlx_hook(game->win_ptr, 17, 0L, ft_close_game, game);
+
+	//mlx_hook(game->win_ptr, Expose, ExposureMask, ft_render_map, game);
 	mlx_loop(game->mlx_ptr);
 	ft_free_all_allocated_memory(game);	
 	return 0;

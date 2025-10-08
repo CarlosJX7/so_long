@@ -28,7 +28,7 @@ void	ft_render_player(t_game *game, int y, int x)
 	if (game->player_sprite == RIGHT)
 		ft_render_sprite(game, game->player_right_img, y, x);
 	//ft_print_movements(game);
-	ft_printf("\nMovimientos: %d\n", game->movements);
+	ft_printf("Movimientos: %d\n", game->movements);
 }
 
 void	ft_render_map_char(t_game *game, int y, int x)

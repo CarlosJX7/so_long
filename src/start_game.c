@@ -12,12 +12,11 @@ void	ft_init_params(t_game *game)
 
 void	ft_init_mlx(t_game *game)
 {
-	game->mlx_ptr = mlx_init();
-	if (!game->mlx_ptr || !game)
-	{
-		//free(game->mlx_ptr);
+	if (!game)
 		ft_error_msg("Error al iniciar la MLX", game);
-	}
+	game->mlx_ptr = mlx_init();
+	if (!game->mlx_ptr)
+		ft_error_msg("Error al iniciar la MLX", game);
 	game->win_ptr = (mlx_new_window(game->mlx_ptr, game->map.col * IMG_WIDTH, game->map.rows * IMG_HEIGHT, "so_long"));
 	if (!game->win_ptr)
 	{
@@ -51,4 +50,27 @@ void	ft_init_sprites(t_game *game)
 	game->player_right_img = ft_new_sprite(mlx, PLAYER_RIGHT_XPM, game);
 	game->gate_open_img = ft_new_sprite(mlx, GATE_OPEN_XPM, game);
 	game->gate_closed_img = ft_new_sprite(mlx, GATE_CLOSED_XPM, game);
+	if (!game->wall_img.xpm_ptr || !game->floor_img.xpm_ptr || !game->player_back_img.xpm_ptr || !game->player_front_img.xpm_ptr || !game->player_left_img.xpm_ptr
+		|| !game->player_right_img.xpm_ptr || !game->coin_img.xpm_ptr || !game->gate_closed_img.xpm_ptr || !game->gate_open_img.xpm_ptr)
+	{
+		if(game->wall_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->wall_img.xpm_ptr);
+		if(game->floor_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->floor_img.xpm_ptr);
+		if(game->player_back_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->player_back_img.xpm_ptr);
+		if(game->player_front_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->player_front_img.xpm_ptr);
+		if(game->player_left_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->player_left_img.xpm_ptr);
+		if(game->player_right_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->player_right_img.xpm_ptr);
+		if(game->coin_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->coin_img.xpm_ptr);
+		if(game->gate_closed_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->gate_closed_img.xpm_ptr);
+		if(game->gate_open_img.xpm_ptr)
+			mlx_destroy_image(mlx, game->gate_open_img.xpm_ptr);
+		ft_error_msg("Error al cargar los sprites\n", game);
+	}
 }

@@ -15,25 +15,33 @@ int		ft_input_handle(int keysym, t_game *game)
 	return 0;
 }
 
-void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_player)
+// input_handle.c
+static int in_bounds(t_game *g, int y, int x)
 {
-	int old_x;
-	int old_y;
+	return (y >= 0 && x >= 0 && y < g->map.rows && x < g->map.col);
+}
+
+void ft_player_movement(t_game *game, int new_y, int new_x, int sprite_player)
+{
+	int old_x = game->map.player.x;
+	int old_y = game->map.player.y;
 
 	game->player_sprite = sprite_player;
-	old_x = game->map.player.x; //ponemos . porque t_map conteine a player sin puntero
-	old_y = game->map.player.y;
+	if (!in_bounds(game, new_y, new_x))
+		return;
+	if (game->map.full[new_y][new_x] == WALL)
+		return;
 	if (game->map.full[new_y][new_x] == MAP_EXIT && game->map.coins == 0)
-		ft_close_game_win(game);
-	else if ((game->map.full[new_y][new_x] == FLOOR) || (game->map.full[new_y][new_x] == COINS))
-	{
-		game->map.full[old_y][old_x] = FLOOR;
-		if (game->map.full[new_y][new_x] == COINS)
-			game->map.coins--;
-		game->map.player.x = new_x;
-		game->map.player.y = new_y;
-		game->map.full[new_y][new_x] = PLAYER;
-		game->movements++;
-		ft_render_map(game);
-	}
+		return (void)ft_close_game_win(game), (void)0;
+	if (game->map.full[new_y][new_x] != FLOOR && game->map.full[new_y][new_x] != COINS)
+		return;
+
+	game->map.full[old_y][old_x] = FLOOR;
+	if (game->map.full[new_y][new_x] == COINS)
+		game->map.coins--;
+	game->map.player.x = new_x;
+	game->map.player.y = new_y;
+	game->map.full[new_y][new_x] = PLAYER;
+	game->movements++;
+	ft_render_map(game);
 }
