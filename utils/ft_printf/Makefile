@@ -6,26 +6,42 @@
 #    By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/21 16:11:07 by cinaquiz          #+#    #+#              #
-#    Updated: 2023/04/17 11:48:23 by cinaquiz         ###   ########.fr        #
+#    Updated: 2025/10/09 19:48:00 by cinaquiz         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME	=	libftprintf.a
+NAME        = libftprintf.a
 
-CC	=	gcc
-CFLAGS	= -Wall -Werror -Wextra
-AR	=	ar
-ARFLAGS = rcs
+# Rutas
+LIBFT_DIR   = ../libft
+LIBFT       = $(LIBFT_DIR)/libft.a
 
-SRCS = ft_hex.c ft_unsigned.c ft_ptr.c ft_printf.c ft_utils.c
+# Herramientas
+CC          = cc
+CFLAGS      = -Wall -Werror -Wextra -I$(LIBFT_DIR)
+AR          = ar
+ARFLAGS     = rcs
 
-OBJS = $(SRCS:.c=.o)
+# Fuentes propias de ft_printf (sin duplicar funciones ya existentes en libft)
+# Si tenías helpers duplicados en ft_utils.c, elimínalo de SRCS y usa libft.h.
+SRCS        = ft_hex.c ft_unsigned.c ft_ptr.c ft_printf.c
 
-all: $(NAME)
+OBJS        = $(SRCS:.c=.o)
 
+# Objetivos
+.PHONY: all clean fclean re libft
+
+all: libft $(NAME)
+
+# Construye la librería estática de ft_printf
 $(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
 
+# Asegura que la libft original existe y está actualizada
+libft:
+	$(MAKE) -C $(LIBFT_DIR) all
+
+# Limpiezas
 clean:
 	rm -rf $(OBJS)
 
@@ -33,5 +49,3 @@ fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
-
-.PHONY: all clean fclean re

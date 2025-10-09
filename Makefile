@@ -13,32 +13,46 @@ MLX_DIR   := mlx
 MLX_LIB   := $(MLX_DIR)/libmlx_Linux.a
 MLX_HDR   := $(MLX_DIR)/mlx.h
 
-# Libft
-LIBFT_DIR := utils/Libft
-LIBFT     := $(LIBFT_DIR)/libft.a
+# Utils (libft, ft_printf, get_next_line)
+UTILS_DIR     := utils
+LIBFT_DIR     := $(UTILS_DIR)/libft
+FT_PRINTF_DIR := $(UTILS_DIR)/ft_printf
+GNL_DIR       := $(UTILS_DIR)/get_next_line
 
-# Fuentes
+LIBFT      := $(LIBFT_DIR)/libft.a
+FT_PRINTF  := $(FT_PRINTF_DIR)/libftprintf.a
+
+# Fuentes del proyecto
 SRCS := \
-	so_long.c \
-	start_game.c \
-	input_handle.c \
-	map_render.c \
-	map.c \
-	map_check.c \
-	free_memory.c \
-	exit_game.c \
-	check_path.c \
-	so_long_utils.c
+    so_long.c \
+    start_game.c \
+    input_handle.c \
+    map_render.c \
+    map_create.c \
+    map_check.c \
+    free_memory.c \
+    exit_game.c \
+    check_path.c \
+    so_long_utils.c
 
+# Prefijo directorio src
 SRCS := $(addprefix $(SRC_DIR)/,$(SRCS))
-OBJS := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+# get_next_line (compilar cualquier .c dentro de utils/get_next_line)
+GNL_SRCS := $(wildcard $(GNL_DIR)/*.c)
+SRCS += $(GNL_SRCS)
+
+# Objetos y dependencias (mirroring de carpetas dentro de build/)
+OBJS := $(SRCS:%.c=$(OBJ_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 # Compilación / Enlace
-CC      := cc
-CFLAGS  := -Wall -Wextra -Werror -MMD -MP -I$(SRC_DIR) -I$(MLX_DIR) -I/usr/include -I$(LIBFT_DIR)
-LDFLAGS := -L$(MLX_DIR) -L/usr/lib
-LDLIBS  := -lmlx_Linux -lXext -lX11 -lm -lz -lbsd
+CC       := cc
+CFLAGS   := -Wall -Wextra -Werror -MMD -MP \
+            -I$(SRC_DIR) -I$(MLX_DIR) -I/usr/include \
+            -I$(LIBFT_DIR) -I$(FT_PRINTF_DIR) -I$(GNL_DIR)
+LDFLAGS  := -L$(MLX_DIR) -L/usr/lib
+LDLIBS   := -lmlx_Linux -lXext -lX11 -lm -lz -lbsd
 
 .DEFAULT_GOAL := all
 
@@ -47,26 +61,24 @@ LDLIBS  := -lmlx_Linux -lXext -lX11 -lm -lz -lbsd
 # Objetivo principal
 all: $(NAME)
 
-# Enlace final (sin relinks si nada ha cambiado)
-$(NAME): $(OBJS) $(LIBFT) $(MLX_LIB)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
+# Enlace final: objetos -> ft_printf -> libft -> MLX/X11 (orden importa)
+$(NAME): $(OBJS) $(FT_PRINTF) $(LIBFT) $(MLX_LIB)
+	$(CC) $(CFLAGS) $(OBJS) $(FT_PRINTF) $(LIBFT) $(LDFLAGS) $(LDLIBS) -o $@
 
 # Compilación con dependencias automáticas
-# Nota: Añadimos la cabecera de MLX como prerequisito real para asegurar que existe.
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(MLX_HDR) | $(OBJ_DIR)
+# Regla genérica que replica la jerarquía de directorios en build/
+$(OBJ_DIR)/%.o: %.c $(MLX_HDR)
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
-
 # ---- MiniLibX ----
-# Sentinel de cabecera: si falta, avisar y abortar (no ejecuta si el archivo existe).
+# Sentinel de cabecera: si falta, avisar y abortar
 $(MLX_HDR):
 	@test -f "$(MLX_HDR)" || { \
 		printf "\033[1;33m[AVISO]\033[0m Falta '%s'. Ejecuta 'make mlx'.\n" "$(MLX_HDR)"; \
 		exit 1; }
 
-# Construcción de la librería: solo si hace falta y existe la carpeta.
+# Construcción de la librería: solo si existe la carpeta
 $(MLX_LIB):
 	@test -d "$(MLX_DIR)" || { \
 		printf "\033[1;33m[AVISO]\033[0m Falta el directorio '%s'. Ejecuta 'make mlx'.\n" "$(MLX_DIR)"; \
@@ -78,28 +90,33 @@ mlx:
 	@if [ -d "$(MLX_DIR)" ]; then \
 		$(MAKE) -C "$(MLX_DIR)"; \
 	else \
-		git clone --depth=1 https://github.com/42Paris/minilibx-linux.git "$(MLX_DIR)" && \
+		git clone --depth=1 https://github.com/42paris/minilibx-linux "$(MLX_DIR)" && \
 		$(MAKE) -C "$(MLX_DIR)"; \
 	fi
 
 mlx_clean:
 	rm -rf "$(MLX_DIR)"
 
-# ---- Libft ----
+# ---- Libft / ft_printf ----
 $(LIBFT):
 	$(MAKE) -C "$(LIBFT_DIR)" all
+
+$(FT_PRINTF):
+	$(MAKE) -C "$(FT_PRINTF_DIR)" all
 
 # ---- Limpieza ----
 clean:
 	$(RM) -r "$(OBJ_DIR)"
-	$(MAKE) -C "$(LIBFT_DIR)" clean
+	$(MAKE) -C "$(LIBFT_DIR)" clean || true
+	$(MAKE) -C "$(FT_PRINTF_DIR)" clean || true
 
 fclean: clean
 	$(RM) "$(NAME)"
-	$(MAKE) -C "$(LIBFT_DIR)" fclean
+	$(MAKE) -C "$(LIBFT_DIR)" fclean || true
+	$(MAKE) -C "$(FT_PRINTF_DIR)" fclean || true
 
 deep_clean: fclean
-	-$(MAKE) -C "$(MLX_DIR)" clean
+	-$(MAKE) -C "$(MLX_DIR)" clean || true
 	rm -rf "$(MLX_DIR)"
 
 re: fclean all

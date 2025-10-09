@@ -20,6 +20,7 @@
 # include <stdint.h>
 # include "../utils/libft/libft.h"
 # include "../utils/get_next_line/get_next_line.h"
+# include "../utils/ft_printf/ft_printf.h"
 
 # define IMG_WIDTH	32
 # define IMG_HEIGHT	32
