@@ -24,7 +24,7 @@ static void	ft_process_line_counts(t_game *g, const char *line, int row)
 		c = line[j];
 		if (c != WALL && c != FLOOR && c != COINS
 			&& c != PLAYER && c != MAP_EXIT)
-			ft_error_msg("Caracter invalido en el mapa", g);
+			ft_error_msg("Caracter no valido en el mapa", g);
 		if (c == COINS)
 			g->map.coins++;
 		else if (c == MAP_EXIT)
@@ -64,7 +64,6 @@ static void	ft_check_rect_and_count(t_game *g)
 	g->map.col = cols;
 }
 
-/* 2) Muros envolventes (y tamaño mínimo para poder cerrarlo) */
 static void	ft_check_walls(t_game *g)
 {
 	int		i;
@@ -93,7 +92,6 @@ static void	ft_check_walls(t_game *g)
 	}
 }
 
-/* 3) Cantidades exactas de entidades */
 static void	ft_check_counts(t_game *g)
 {
 	if (g->map.players == 0)
@@ -108,7 +106,6 @@ static void	ft_check_counts(t_game *g)
 		ft_error_msg("No se han encontrado objetos en el mapa", g);
 }
 
-/* Punto de entrada único; no llamar a otros validadores en paralelo */
 void	ft_map_check(t_game *game)
 {
 	ft_check_rect_and_count(game);

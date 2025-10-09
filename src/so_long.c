@@ -28,7 +28,7 @@ void	ft_argv_checker(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		ft_printf("Error\nCantidad args incorrecto\n");
+		ft_printf("Error\n>Cantidad args incorrecto<\n");
 		exit(1);
 	}
 	slash = ft_strrchr(argv[1], '/');
@@ -39,7 +39,7 @@ void	ft_argv_checker(int argc, char **argv)
 	len = ft_strlen(name);
 	if (len <= 4 || ft_strncmp(name + (len - 4), ".ber", 4) != 0)
 	{
-		ft_printf("Error\nExtension\n");
+		ft_printf("Error\n>Extension no valida<\n");
 		exit(1);
 	}
 }
@@ -52,7 +52,7 @@ int	main(int argc, char **argv)
 	ft_argv_checker(argc, argv);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		ft_error_msg("Error al abrir el archivo", NULL);
+		ft_error_msg(">Error al abrir el archivo<", NULL);
 	game = ft_init_map(fd);
 	ft_map_check(game);
 	if (!ft_run_dfs_check(game))

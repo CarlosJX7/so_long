@@ -12,7 +12,6 @@
 
 #include "map_create.h"
 
-/* Cuenta líneas en el buffer crudo sin sobrecontar si termina en '\n' */
 static int	ft_count_lines_raw(const char *s)
 {
 	int		i;
