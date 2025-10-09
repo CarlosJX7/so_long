@@ -12,6 +12,7 @@
 
 #include <stdarg.h>
 #include "ft_printf.h"
+#include "ft_utils.h"
 
 static void	ft_ini(int *a, int *b)
 {
@@ -22,13 +23,13 @@ static void	ft_ini(int *a, int *b)
 static int	ft_print_types(va_list args, char c)
 {
 	if (c == 'd')
-		return (ft_putnbr_fd(va_arg(args, int), 1));
+		return (ft_putnbr_fd_print(va_arg(args, int), 1));
 	if (c == 'c')
-		return (ft_putchar_fd(va_arg(args, int), 1));
+		return (ft_putchar_fd_print(va_arg(args, int), 1));
 	if (c == 's')
-		return (ft_putstr_fd(va_arg(args, char *), 1));
+		return (ft_putstr_fd_print(va_arg(args, char *), 1));
 	if (c == 'i')
-		return (ft_putnbr_fd(va_arg(args, int), 1));
+		return (ft_putnbr_fd_print(va_arg(args, int), 1));
 	if (c == 'X')
 		return (ft_hex(va_arg(args, unsigned int), c));
 	if (c == 'x')
@@ -77,7 +78,7 @@ int	ft_printf(char const *ph, ...)
 	va_list	args;
 	int		n;
 
-	len = ft_strlen(ph);
+	len = ft_strlen_print(ph);
 	va_start(args, ph);
 	n = ft_print_args(args, ph, len);
 	va_end(args);

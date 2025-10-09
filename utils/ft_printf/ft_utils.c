@@ -12,7 +12,17 @@
 
 #include "ft_printf.h"
 
-int	ft_putchar_fd(char c, int fd)
+int	ft_strlen_print(char const *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+int	ft_putchar_fd_print(char c, int fd)
 {
 	if (write(fd, &c, 1) < 0)
 		return (-1);
@@ -20,17 +30,17 @@ int	ft_putchar_fd(char c, int fd)
 		return (1);
 }
 
-int	ft_putstr_fd(char *s, int fd)
+int	ft_putstr_fd_print(char *s, int fd)
 {
 	if (!s || fd < 0)
 		return (write(fd, "(null)", 6));
 	else
 	{
-		return (write(fd, s, ft_strlen(s)));
-	}	
+		return (write(fd, s, ft_strlen_print(s)));
+	}
 }
 
-int	ft_putnbr_fd(int n, int fd)
+int	ft_putnbr_fd_print(int n, int fd)
 {
 	long int	copia;
 	int			r;
@@ -44,20 +54,10 @@ int	ft_putnbr_fd(int n, int fd)
 	}
 	if (copia > 9)
 	{
-		r += ft_putnbr_fd(copia / 10, fd);
-		r += ft_putchar_fd((copia % 10) + '0', fd);
+		r += ft_putnbr_fd_print(copia / 10, fd);
+		r += ft_putchar_fd_print((copia % 10) + '0', fd);
 	}
 	else
-		r += ft_putchar_fd(copia + '0', fd);
+		r += ft_putchar_fd_print(copia + '0', fd);
 	return (r);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
 }

@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_unsigned.c                                      :+:      :+:    :+:   */
+/*   ft_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 16:10:03 by cinaquiz          #+#    #+#             */
-/*   Updated: 2023/03/23 16:05:58 by cinaquiz         ###   ########.fr       */
+/*   Created: 2025/10/09 20:26:33 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 20:26:41 by cinaquiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-#include "ft_utils.h"
+#ifndef FT_UTILS_H
+# define FT_UTILS_H
 
-int	ft_unsigned_fd(unsigned int nb, int fd)
-{
-	int	n;
+int	ft_putchar_fd_print(char c, int fd);
+int	ft_putstr_fd_print(char *s, int fd);
+int	ft_putnbr_fd_print(int n, int fd);
+int	ft_strlen_print(char const *s);
 
-	n = 0;
-	if (nb > 9)
-		n += ft_putnbr_fd_print(nb / 10, fd);
-	n += ft_putchar_fd_print(48 + nb % 10, fd);
-	return (n);
-}
+#endif

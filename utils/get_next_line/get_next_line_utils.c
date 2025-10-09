@@ -12,7 +12,6 @@
 
 #include "get_next_line.h"
 
-
 static void	ft_strjoin_cpy(char *r, char const *s1, char const *s2, size_t l)
 {
 	size_t	i;

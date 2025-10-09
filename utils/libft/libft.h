@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#	ifndef LIBFT_H
+#ifndef LIBFT_H
 # define LIBFT_H
 
 # include <unistd.h>
 # include <stddef.h>
 # include <stdlib.h>
-#include <stdint.h>
+# include <stdint.h>
 
 int		ft_atoi(const char *str);
 int		ft_isalnum(int c);

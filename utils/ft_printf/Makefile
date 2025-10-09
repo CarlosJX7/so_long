@@ -24,7 +24,7 @@ ARFLAGS     = rcs
 
 # Fuentes propias de ft_printf (sin duplicar funciones ya existentes en libft)
 # Si tenías helpers duplicados en ft_utils.c, elimínalo de SRCS y usa libft.h.
-SRCS        = ft_hex.c ft_unsigned.c ft_ptr.c ft_printf.c
+SRCS        = ft_hex.c ft_unsigned.c ft_ptr.c ft_printf.c ft_utils.c
 
 OBJS        = $(SRCS:.c=.o)
 
