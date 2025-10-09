@@ -29,7 +29,7 @@ void	ft_argv_checker(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_printf("Error\n>Cantidad args incorrecto<\n");
-		exit(1);
+		return (0);
 	}
 	slash = ft_strrchr(argv[1], '/');
 	if (slash)
@@ -40,7 +40,7 @@ void	ft_argv_checker(int argc, char **argv)
 	if (len <= 4 || ft_strncmp(name + (len - 4), ".ber", 4) != 0)
 	{
 		ft_printf("Error\n>Extension no valida<\n");
-		exit(1);
+		return (0);
 	}
 }
 
