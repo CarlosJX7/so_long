@@ -1,7 +1,19 @@
-#include "map.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map_create.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/09 18:23:59 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:24:03 by cinaquiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "map_create.h"
 
 /* Cuenta líneas en el buffer crudo sin sobrecontar si termina en '\n' */
-static int	count_lines_raw(const char *s)
+static int	ft_count_lines_raw(const char *s)
 {
 	int		i;
 	int		lines;
@@ -33,26 +45,26 @@ static void	ft_free_map_temp(char **map_temp, t_game *game)
 	ft_error_msg("Error al iniciar el mapa", game);
 }
 
-static void	finalize_after_read(t_game *game, char **map_tmp, int ln_ct, int fd)
+static void	ft_finalize_after_read(t_game *g, char **map_tmp, int ln_ct, int fd)
 {
 	int	raw_lines;
 	int	split_lines;
 
 	close(fd);
 	if (ln_ct == 0)
-		ft_free_map_temp(map_tmp, game);
-	raw_lines = count_lines_raw(*map_tmp);
-	game->map.full = ft_split(*map_tmp, '\n');
-	if (!game->map.full)
-		ft_free_map_temp(map_tmp, game);
-	split_lines = count_lines_split(game->map.full);
+		ft_free_map_temp(map_tmp, g);
+	raw_lines = ft_count_lines_raw(*map_tmp);
+	g->map.full = ft_split(*map_tmp, '\n');
+	if (!g->map.full)
+		ft_free_map_temp(map_tmp, g);
+	split_lines = ft_count_lines_split(g->map.full);
 	if (raw_lines != split_lines)
 	{
-		game->map_alloc_bool = true;
-		ft_free_map_temp(map_tmp, game);
+		g->map_alloc_bool = true;
+		ft_free_map_temp(map_tmp, g);
 	}
-	game->map.rows = split_lines;
-	game->map_alloc_bool = true;
+	g->map.rows = split_lines;
+	g->map_alloc_bool = true;
 	free(*map_tmp);
 	*map_tmp = NULL;
 }
@@ -103,6 +115,6 @@ t_game	*ft_init_map(int fd)
 		map_temp = tmp;
 		line_count++;
 	}
-	finalize_after_read(game, &map_temp, line_count, fd);
+	ft_finalize_after_read(game, &map_temp, line_count, fd);
 	return (game);
 }

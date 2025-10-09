@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   map_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: student                                                           */
+/*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/09 18:23:38 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:23:42 by cinaquiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 #include "map_check.h"
 
-static void	process_line_counts(t_game *g, const char *line, int row)
+static void	ft_process_line_counts(t_game *g, const char *line, int row)
 {
 	int		j;
 	char	c;
@@ -36,7 +39,7 @@ static void	process_line_counts(t_game *g, const char *line, int row)
 	}
 }
 
-static void	check_rect_and_count(t_game *g)
+static void	ft_check_rect_and_count(t_game *g)
 {
 	int		i;
 	int		cols;
@@ -54,7 +57,7 @@ static void	check_rect_and_count(t_game *g)
 	{
 		if ((int)ft_strlen(m[i]) != cols)
 			ft_error_msg("Mapa no rectangular", g);
-		process_line_counts(g, m[i], i);
+		ft_process_line_counts(g, m[i], i);
 		i++;
 	}
 	g->map.rows = i;
@@ -62,7 +65,7 @@ static void	check_rect_and_count(t_game *g)
 }
 
 /* 2) Muros envolventes (y tamaño mínimo para poder cerrarlo) */
-static void	check_walls(t_game *g)
+static void	ft_check_walls(t_game *g)
 {
 	int		i;
 	int		cols;
@@ -91,7 +94,7 @@ static void	check_walls(t_game *g)
 }
 
 /* 3) Cantidades exactas de entidades */
-static void	check_counts(t_game *g)
+static void	ft_check_counts(t_game *g)
 {
 	if (g->map.players == 0)
 		ft_error_msg("Jugador no encontrado", g);
@@ -106,9 +109,9 @@ static void	check_counts(t_game *g)
 }
 
 /* Punto de entrada único; no llamar a otros validadores en paralelo */
-void	map_check(t_game *game)
+void	ft_map_check(t_game *game)
 {
-	check_rect_and_count(game);
-	check_walls(game);
-	check_counts(game);
+	ft_check_rect_and_count(game);
+	ft_check_walls(game);
+	ft_check_counts(game);
 }

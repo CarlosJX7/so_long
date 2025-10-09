@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/09 18:24:29 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:24:30 by cinaquiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
@@ -7,8 +19,8 @@
 # include <X11/keysym.h>
 # include "../utils/Libft/libft.h"
 
-# define IMG_WIDTH 32
-# define IMG_HEIGHT 32
+# define IMG_WIDTH	32
+# define IMG_HEIGHT	32
 
 # define WALL		'1'
 # define FLOOR		'0'
@@ -16,24 +28,15 @@
 # define PLAYER		'P'
 # define MAP_EXIT	'E'
 
-//# define WALL_XPM			"assets/sprites/wall.xpm"
 # define WALL_XPM			"assets/sprites/muro.xpm"
-//# define FLOOR_XPM			"assets/sprites/floor.xpm"
 # define FLOOR_XPM			"assets/sprites/suelo_verde.xpm"
-//# define COIN_XPM			"assets/sprites/coin.xpm"
 # define COIN_XPM			"assets/sprites/monedas.xpm"
-//# define PLAYER_FRONT_XPM	"assets/sprites/player/front.xpm"
 # define PLAYER_FRONT_XPM	"assets/sprites/capi_front.xpm"
-//# define PLAYER_LEFT_XPM		"assets/sprites/player/left.xpm"
-# define PLAYER_LEFT_XPM		"assets/sprites/capi_left.xpm"
-//# define PLAYER_RIGHT_XPM	"assets/sprites/player/right.xpm"
+# define PLAYER_LEFT_XPM	"assets/sprites/capi_left.xpm"
 # define PLAYER_RIGHT_XPM	"assets/sprites/capi_right.xpm"
-//# define PLAYER_BACK_XPM		"assets/sprites/player/back.xpm"
-# define PLAYER_BACK_XPM		"assets/sprites/capi_back.xpm"
-//# define GATE_OPEN_XPM		"assets/sprites/gate_open.xpm"
+# define PLAYER_BACK_XPM	"assets/sprites/capi_back.xpm"
 # define GATE_OPEN_XPM		"assets/sprites/open_salida.xpm"
-//# define GATE_CLOSED_XPM		"assets/sprites/gate_closed.xpm"
-# define GATE_CLOSED_XPM		"assets/sprites/closed_salida.xpm"
+# define GATE_CLOSED_XPM	"assets/sprites/closed_salida.xpm"
 
 # define KEY_W		119
 # define KEY_A		97
@@ -41,10 +44,10 @@
 # define KEY_D		100
 # define KEY_ESC	65307
 
-# define FRONT 1
-# define LEFT 2
-# define RIGHT 3
-# define BACK 4
+# define FRONT	1
+# define LEFT	2
+# define RIGHT	3
+# define BACK	4
 
 typedef enum e_bool
 {

@@ -1,0 +1,10 @@
+ft_strlen
+ft_strrchr
+ft_strncmp
+ft_calloc
+ft_strlcpy
+ft_strlcat
+ft_strdup
+ft_substr
+ft_putstr_fd
+ft_strchr

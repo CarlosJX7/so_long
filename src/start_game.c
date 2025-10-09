@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_game.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/09 18:24:50 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:24:51 by cinaquiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "start_game.h"
 
 void	ft_init_params(t_game *game)
@@ -17,7 +29,7 @@ void	ft_init_mlx(t_game *game)
 		ft_error_msg("Error al iniciar la MLX", game);
 	}
 	game->win_ptr = (mlx_new_window(game->mlx_ptr, game->map.col * IMG_WIDTH,
-		game->map.rows * IMG_HEIGHT, "so_long"));
+				game->map.rows * IMG_HEIGHT, "so_long"));
 	if (!game->win_ptr)
 	{
 		ft_error_msg("Error al crear la ventana", game);

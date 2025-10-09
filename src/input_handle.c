@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input_handle.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/09 18:16:13 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:16:14 by cinaquiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "input_handle.h"
 
 int	ft_input_handle(int keysym, t_game *g)
@@ -15,7 +27,7 @@ int	ft_input_handle(int keysym, t_game *g)
 	return (0);
 }
 
-static int	in_bounds_mov(t_game *g, int y, int x)
+static int	ft_in_bounds_mov(t_game *g, int y, int x)
 {
 	return (y >= 0 && x >= 0 && y < g->map.rows && x < g->map.col);
 }
@@ -28,7 +40,7 @@ void	ft_player_movement(t_game *game, int new_y, int new_x, int sprite_p)
 	old_x = game->map.player.x;
 	old_y = game->map.player.y;
 	game->player_sprite = sprite_p;
-	if (!in_bounds_mov(game, new_y, new_x))
+	if (!ft_in_bounds_mov(game, new_y, new_x))
 		return ;
 	if (game->map.full[new_y][new_x] == WALL)
 		return ;

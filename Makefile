@@ -23,7 +23,7 @@ SRCS := \
 	start_game.c \
 	input_handle.c \
 	map_render.c \
-	map.c \
+	map_create.c \
 	map_check.c \
 	free_memory.c \
 	exit_game.c \
@@ -60,7 +60,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 # ---- MiniLibX ----
-# Sentinel de cabecera: si falta, avisar y abortar (no ejecuta si el archivo existe).
+# Cabecera: si falta, avisar y abortar (no ejecuta si el archivo existe).
 $(MLX_HDR):
 	@test -f "$(MLX_HDR)" || { \
 		printf "\033[1;33m[AVISO]\033[0m Falta '%s'. Ejecuta 'make mlx'.\n" "$(MLX_HDR)"; \

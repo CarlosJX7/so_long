@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/09 18:24:35 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:24:36 by cinaquiz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long_utils.h"
 
 char	*ft_strjoin_free(char *s1, char *s2)
@@ -19,7 +31,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	return (str);
 }
 
-int	count_lines_split(char **arr)
+int	ft_count_lines_split(char **arr)
 {
 	int	i;
 
@@ -31,14 +43,14 @@ int	count_lines_split(char **arr)
 	return (i);
 }
 
-int	is_passable(char c)
+int	ft_is_passable(char c)
 {
 	if (c == FLOOR || c == COINS || c == PLAYER)
 		return (1);
 	return (0);
 }
 
-int	in_bounds(int x, int y, int w, int h)
+int	ft_in_bounds(int x, int y, int w, int h)
 {
 	if (x < 0 || y < 0)
 		return (0);

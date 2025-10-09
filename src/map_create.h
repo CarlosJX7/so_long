@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_path.h                                       :+:      :+:    :+:   */
+/*   map_create.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 18:15:10 by cinaquiz          #+#    #+#             */
-/*   Updated: 2025/10/09 18:15:11 by cinaquiz         ###   ########.fr       */
+/*   Created: 2025/10/09 18:24:07 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/10/09 18:24:08 by cinaquiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHECK_PATH_H
-# define CHECK_PATH_H
+#ifndef MAP_CREATE_H
+# define MAP_CREATE_H
 
 # include "so_long.h"
+# include "so_long_utils.h"
 # include "exit_game.h"
 
-int	ft_run_dfs_check(t_game *g);
+t_game	*ft_init_map(int fd);
 
 #endif
