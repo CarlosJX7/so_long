@@ -109,7 +109,6 @@ t_game	*ft_init_map(int fd)
 		{
 			free(map_temp);
 			close(fd);
-			game->map_alloc_bool = true;
 			ft_error_msg("Error al iniciar el mapa", game);
 		}
 		map_temp = tmp;
