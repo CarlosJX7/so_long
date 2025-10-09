@@ -20,7 +20,7 @@
 #include "check_path.h"
 #include <fcntl.h>
 
-void	ft_argv_checker(int argc, char **argv)
+int	ft_argv_checker(int argc, char **argv)
 {
 	char	*slash;
 	char	*name;
@@ -29,7 +29,7 @@ void	ft_argv_checker(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_printf("Error\n>Cantidad args incorrecto<\n");
-		return (0);
+		return (-1);
 	}
 	slash = ft_strrchr(argv[1], '/');
 	if (slash)
@@ -40,8 +40,9 @@ void	ft_argv_checker(int argc, char **argv)
 	if (len <= 4 || ft_strncmp(name + (len - 4), ".ber", 4) != 0)
 	{
 		ft_printf("Error\n>Extension no valida<\n");
-		return (0);
+		return (-1);
 	}
+	return (1);
 }
 
 int	main(int argc, char **argv)
@@ -49,7 +50,8 @@ int	main(int argc, char **argv)
 	t_game	*game;
 	int		fd;
 
-	ft_argv_checker(argc, argv);
+	if (ft_argv_checker(argc, argv) != 1)
+		return (0);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		ft_error_msg(">Error al abrir el archivo<", NULL);

@@ -63,6 +63,7 @@ void	ft_free_all_allocated_memory(t_game *game)
 	if (game->mlx_ptr)
 	{
 		mlx_destroy_display(game->mlx_ptr);
+		free(game->mlx_ptr);
 		game->mlx_ptr = NULL;
 	}
 	ft_free_map(game);
