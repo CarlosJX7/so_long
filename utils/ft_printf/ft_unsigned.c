@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long_utils.h                                    :+:      :+:    :+:   */
+/*   ft_unsigned.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 18:24:40 by cinaquiz          #+#    #+#             */
-/*   Updated: 2025/10/09 18:24:43 by cinaquiz         ###   ########.fr       */
+/*   Created: 2023/03/21 16:10:03 by cinaquiz          #+#    #+#             */
+/*   Updated: 2023/03/23 16:05:58 by cinaquiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_UTILS_H
-# define SO_LONG_UTILS_H
+#include "ft_printf.h"
 
-# include <unistd.h>
-# include "so_long.h"
+int	ft_unsigned_fd(unsigned int nb, int fd)
+{
+	int	n;
 
-char	*ft_strjoin_free(char *s1, char *s2);
-int		ft_count_lines_split(char **arr);
-int		ft_is_passable(char c);
-int		ft_in_bounds(int x, int y, int w, int h);
-
-#endif
+	n = 0;
+	if (nb > 9)
+		n += ft_putnbr_fd(nb / 10, fd);
+	n += ft_putchar_fd(48 + nb % 10, fd);
+	return (n);
+}

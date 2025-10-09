@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long_utils.h                                    :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 18:24:40 by cinaquiz          #+#    #+#             */
-/*   Updated: 2025/10/09 18:24:43 by cinaquiz         ###   ########.fr       */
+/*   Created: 2025/05/06 18:31:41 by cinaquiz          #+#    #+#             */
+/*   Updated: 2025/05/12 16:26:12 by cinaquiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_UTILS_H
-# define SO_LONG_UTILS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
+# include <stdlib.h>
 # include <unistd.h>
-# include "so_long.h"
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
-char	*ft_strjoin_free(char *s1, char *s2);
-int		ft_count_lines_split(char **arr);
-int		ft_is_passable(char c);
-int		ft_in_bounds(int x, int y, int w, int h);
+char	*get_next_line(int fd);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *old);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char	const *s, unsigned int start, size_t len);
+size_t	ft_strlen(const char *s);
 
 #endif

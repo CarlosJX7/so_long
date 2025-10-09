@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long_utils.h                                    :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cinaquiz <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/09 18:24:40 by cinaquiz          #+#    #+#             */
-/*   Updated: 2025/10/09 18:24:43 by cinaquiz         ###   ########.fr       */
+/*   Created: 2023/03/21 16:09:30 by cinaquiz          #+#    #+#             */
+/*   Updated: 2023/03/23 16:06:49 by cinaquiz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_UTILS_H
-# define SO_LONG_UTILS_H
-
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
+# include <stddef.h>
 # include <unistd.h>
-# include "so_long.h"
+# include <stdlib.h>
 
-char	*ft_strjoin_free(char *s1, char *s2);
-int		ft_count_lines_split(char **arr);
-int		ft_is_passable(char c);
-int		ft_in_bounds(int x, int y, int w, int h);
-
+int		ft_printf(const char *format, ...);
+int		ft_putchar_fd(char c, int fd);
+size_t	ft_strlen(const char *s);
+int		ft_hex(unsigned int n, char c);
+int		ft_putnbr_fd(int n, int fd);
+int		ft_ptr(unsigned long n);
+int		ft_putstr_fd(char *s, int fd);
+int		ft_unsigned_fd(unsigned int nb, int fd);
 #endif

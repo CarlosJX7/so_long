@@ -17,7 +17,9 @@
 # include <mlx.h>
 # include <X11/X.h>
 # include <X11/keysym.h>
-# include "../utils/Libft/libft.h"
+# include <stdint.h>
+# include "../utils/libft/libft.h"
+# include "../utils/get_next_line/get_next_line.h"
 
 # define IMG_WIDTH	32
 # define IMG_HEIGHT	32
