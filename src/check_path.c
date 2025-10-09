@@ -94,7 +94,7 @@ int	run_dfs_check(t_game *g)
 
 	vis = calloc(g->map.col * g->map.rows, sizeof(char));
 	if (!vis)
-		ft_error_msg("DFS ft_calloc error\n", g);
+		ft_error_msg("DFS ft_calloc error", g);
 	start = g->map.player.y * g->map.col + g->map.player.x;
 	dfs_visit(g, start % g->map.col, start / g->map.col, vis);
 	reach_c = count_reached_coins(g, vis);

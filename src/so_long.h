@@ -1,8 +1,7 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
-# include <unistd.h>
-# include <fcntl.h>
+# include <stdlib.h>
 # include <mlx.h>
 # include <X11/X.h>
 # include <X11/keysym.h>

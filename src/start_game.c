@@ -20,7 +20,7 @@ void	ft_init_mlx(t_game *game)
 		game->map.rows * IMG_HEIGHT, "so_long"));
 	if (!game->win_ptr)
 	{
-		ft_error_msg("Error al crear la ventana\n", game);
+		ft_error_msg("Error al crear la ventana", game);
 	}
 }
 
@@ -30,7 +30,7 @@ t_image	ft_new_sprite(void *mlx, char *path, t_game *game)
 
 	sprite.xpm_ptr = mlx_xpm_file_to_image(mlx, path, &sprite.x, &sprite.y);
 	if (!sprite.xpm_ptr)
-		ft_error_msg("Error al generar el sprite\n", game);
+		ft_error_msg("Error al generar el sprite", game);
 	return (sprite);
 }
 

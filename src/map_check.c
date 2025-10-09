@@ -21,7 +21,7 @@ static void	process_line_counts(t_game *g, const char *line, int row)
 		c = line[j];
 		if (c != WALL && c != FLOOR && c != COINS
 			&& c != PLAYER && c != MAP_EXIT)
-			ft_error_msg("Caracter invalido en el mapa\n", g);
+			ft_error_msg("Caracter invalido en el mapa", g);
 		if (c == COINS)
 			g->map.coins++;
 		else if (c == MAP_EXIT)
@@ -44,7 +44,7 @@ static void	check_rect_and_count(t_game *g)
 
 	m = g->map.full;
 	if (!m || !m[0])
-		ft_error_msg("Mapa vacio\n", g);
+		ft_error_msg("Mapa vacio", g);
 	cols = (int)ft_strlen(m[0]);
 	g->map.coins = 0;
 	g->map.exit = 0;
@@ -73,19 +73,19 @@ static void	check_walls(t_game *g)
 	rows = g->map.rows;
 	m = g->map.full;
 	if (rows < 3 || cols < 3)
-		ft_error_msg("Mapa demasiado pequeño\n", g);
+		ft_error_msg("Mapa demasiado pequeño", g);
 	i = 0;
 	while (i < cols)
 	{
 		if (m[0][i] != WALL || m[rows - 1][i] != WALL)
-			ft_error_msg("No está rodeado de muros\n", g);
+			ft_error_msg("No está rodeado de muros", g);
 		i++;
 	}
 	i = 0;
 	while (i < rows)
 	{
 		if (m[i][0] != WALL || m[i][cols - 1] != WALL)
-			ft_error_msg("No está rodeado de muros\n", g);
+			ft_error_msg("No está rodeado de muros", g);
 		i++;
 	}
 }
@@ -94,15 +94,15 @@ static void	check_walls(t_game *g)
 static void	check_counts(t_game *g)
 {
 	if (g->map.players == 0)
-		ft_error_msg("Jugador no encontrado\n", g);
+		ft_error_msg("Jugador no encontrado", g);
 	if (g->map.players > 1)
-		ft_error_msg("Jugador duplicado\n", g);
+		ft_error_msg("Jugador duplicado", g);
 	if (g->map.exit == 0)
-		ft_error_msg("No se ha encontrado una salida\n", g);
+		ft_error_msg("No se ha encontrado una salida", g);
 	if (g->map.exit > 1)
-		ft_error_msg("Salida duplicada\n", g);
+		ft_error_msg("Salida duplicada", g);
 	if (g->map.coins < 1)
-		ft_error_msg("No se han encontrado objetos en el mapa\n", g);
+		ft_error_msg("No se han encontrado objetos en el mapa", g);
 }
 
 /* Punto de entrada único; no llamar a otros validadores en paralelo */

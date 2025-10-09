@@ -30,7 +30,7 @@ static void	ft_free_map_temp(char **map_temp, t_game *game)
 		free(*map_temp);
 		*map_temp = NULL;
 	}
-	ft_error_msg("Error al iniciar el mapa\n", game);
+	ft_error_msg("Error al iniciar el mapa", game);
 }
 
 static void	finalize_after_read(t_game *game, char **map_tmp, int ln_ct, int fd)
@@ -63,7 +63,7 @@ static void	ft_alloc_check(char **map_temp, t_game **game, int fd, int *ln_ct)
 	if (!*map_temp)
 	{
 		close(fd);
-		ft_printf("Error\n");
+		ft_printf("Error\n de Asignación de memoria\n");
 		exit(1);
 	}
 	*game = ft_calloc(1, sizeof(t_game));
@@ -71,7 +71,7 @@ static void	ft_alloc_check(char **map_temp, t_game **game, int fd, int *ln_ct)
 	{
 		close(fd);
 		free(*map_temp);
-		ft_printf("Error\n");
+		ft_printf("Error\n Asignación de memoria\n");
 		exit(1);
 	}
 	(*game)->map_alloc_bool = false;
@@ -98,7 +98,7 @@ t_game	*ft_init_map(int fd)
 		{
 			free(map_temp);
 			close(fd);
-			ft_error_msg("Error al iniciar el mapa3\n", game);
+			ft_error_msg("Error al iniciar el mapa", game);
 		}
 		map_temp = tmp;
 		line_count++;

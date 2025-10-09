@@ -6,6 +6,7 @@
 #include "input_handle.h"
 #include "free_memory.h"
 #include "check_path.h"
+# include <fcntl.h>
 
 void	ft_argv_checker(int argc, char **argv)
 {
@@ -39,11 +40,11 @@ int	main(int argc, char **argv)
 	ft_argv_checker(argc, argv);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		ft_error_msg("Error al abrir el archivo\n", NULL);
+		ft_error_msg("Error al abrir el archivo", NULL);
 	game = ft_init_map(fd);
 	map_check(game);
 	if (!run_dfs_check(game))
-		ft_error_msg("Error, no hay ruta válida\n", game);
+		ft_error_msg("Error, no hay ruta válida", game);
 	ft_init_params(game);
 	ft_init_mlx(game);
 	ft_init_sprites(game);
