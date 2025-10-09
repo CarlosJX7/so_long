@@ -14,7 +14,6 @@
 # define START_GAME_H
 
 # include "so_long.h"
-# include "start_game.h"
 # include "exit_game.h"
 
 void		ft_init_params(t_game *game);
