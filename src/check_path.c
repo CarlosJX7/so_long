@@ -98,23 +98,20 @@ static int	ft_count_reached_coins(t_game *g, char *vis)
 	return (cnt);
 }
 
-int	ft_run_dfs_check(t_game *g)
+int ft_run_dfs_check(t_game *g)
 {
-	int		start;
-	char	*vis;
-	int		reach_c;
+    char *vis = ft_calloc(g->map.col * g->map.rows, sizeof(char));
+    int  reach_c;
 
-	vis = ft_calloc(g->map.col * g->map.rows, sizeof(char));
-	if (!vis)
-		ft_error_msg("DFS ft_calloc error", g);
-	start = g->map.player.y * g->map.col + g->map.player.x;
-	ft_dfs_visit(g, start % g->map.col, start / g->map.col, vis);
-	reach_c = ft_count_reached_coins(g, vis);
-	if (!(reach_c == g->map.coins && ft_exit_adjacent_reached(g, vis)))
-	{
-		free(vis);
-		return (0);
-	}
-	free(vis);
-	return (1);
+    if (!vis)
+        ft_error_msg("DFS ft_calloc error", g);
+    ft_dfs_visit(g, g->map.player.x, g->map.player.y, vis);
+    reach_c = ft_count_reached_coins(g, vis);
+    if (!(reach_c == g->map.coins && ft_exit_adjacent_reached(g, vis)))
+    {
+        free(vis);
+        return 0;
+    }
+    free(vis);
+    return 1;
 }
